@@ -1,0 +1,21 @@
+:root {
+  font-family: "Noto Sans", sans-serif;
+}
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-size: 62.5%;
+  //   background-color: #efefef;
+  background-color: #efefef;
+}
+
+a {
+  all: unset;
+}
