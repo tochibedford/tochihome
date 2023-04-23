@@ -48,6 +48,15 @@ function LoopingAudio(props: { audioFile: string, volume: number, cutoff: number
             setSourceNode(sourceNode);
             setVolumeNode(volumeNode);
             setFilterNode(filterNode);
+
+            // Smoothly update filter cutoff
+            if (filterNode.frequency) {
+                filterNode.frequency.setTargetAtTime(
+                    props.cutoff ?? 20000,
+                    audioContext.currentTime,
+                    0.01 // Transition time in seconds
+                );
+            }
         }
     }, [audioContext, audioBuffer, props.volume, props.cutoff]);
 

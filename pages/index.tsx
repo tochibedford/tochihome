@@ -7,10 +7,22 @@ import LoopingAudio from '@components/loopingAudio'
 export default function Home() {
   const [noiseSeed, setNoiseSeed] = useState(2)
   // const [noi, setNoiseBaseFrequency] = useState(2)
+  const [audioCutoffFreq, setAudioCutoffFreq] = useState(400)
   const t = useAnimatedT()
   useEffect(() => {
     setNoiseSeed(lerp(40, 50, t))
   }, [t])
+
+  useEffect(() => {
+    const handleClick = () => {
+      setAudioCutoffFreq(300)
+    }
+    window.addEventListener('click', handleClick)
+
+    return () => {
+      window.removeEventListener('click', handleClick)
+    }
+  })
   return (
     <>
       <Head>
@@ -29,7 +41,7 @@ export default function Home() {
         <video src="./vhs.mp4" playsInline muted autoPlay loop className={styles.vhsFilter} />
         <video src="./vhsOptim.mp4" playsInline muted autoPlay loop className={styles.vhsFilter} />
         <video src="./vhsOptim2.mp4" playsInline muted autoPlay loop className={`${styles.vhsFilter} ${styles.reducedVisibility}`} />
-        <LoopingAudio audioFile='/webwave90bpm.ogg' cutoff={1000} volume={0.5} />
+        <LoopingAudio audioFile='/webwave90bpm.ogg' cutoff={audioCutoffFreq} volume={0.2} />
       </main>
     </>
   )
