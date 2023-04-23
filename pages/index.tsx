@@ -2,6 +2,7 @@ import Head from 'next/head'
 import styles from '@styles/Home.module.scss'
 import { useEffect, useState } from 'react'
 import { lerp, useAnimatedT } from '../utilities'
+import LoopingAudio from '@components/loopingAudio'
 
 export default function Home() {
   const [noiseSeed, setNoiseSeed] = useState(2)
@@ -28,6 +29,7 @@ export default function Home() {
         <video src="./vhs.mp4" playsInline muted autoPlay loop className={styles.vhsFilter} />
         <video src="./vhsOptim.mp4" playsInline muted autoPlay loop className={styles.vhsFilter} />
         <video src="./vhsOptim2.mp4" playsInline muted autoPlay loop className={`${styles.vhsFilter} ${styles.reducedVisibility}`} />
+        <LoopingAudio audioFile='/webwave90bpm.ogg' cutoff={1000} volume={0.5} />
       </main>
     </>
   )
