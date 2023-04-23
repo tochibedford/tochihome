@@ -1,3 +1,4 @@
+import ErrorBoundary from '@components/ErrorBoundary'
 import Footer from '@components/footer'
 import Navbar from '@components/navbar'
 import '@styles/globals.scss'
@@ -7,8 +8,10 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Navbar />
-      <Component {...pageProps} />
-      <Footer />
+      <ErrorBoundary fallback={<div>Error</div>}>
+        <Component {...pageProps} />
+      </ErrorBoundary>
+      {/* <Footer /> */}
     </>
   )
 }

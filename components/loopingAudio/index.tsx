@@ -16,7 +16,8 @@ function LoopingAudio(props: { audioFile: string, setFreqSmoothlyRef: MutableRef
     useEffect(() => {
         const loadAudio = async () => {
             try {
-                const audioContext = new AudioContext();
+                const audioContext = new (AudioContext || (window as any).webkitAudioContext)();
+                // console.log((window as any).webkitAudioContext)
                 const response = await fetch(props.audioFile);
                 const arrayBuffer = await response.arrayBuffer();
                 const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
