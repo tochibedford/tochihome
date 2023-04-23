@@ -11,7 +11,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <ErrorBoundary fallback={<div>Error</div>}>
         <Component {...pageProps} />
       </ErrorBoundary>
-      {/* <Footer /> */}
+      <Footer />
     </>
   )
 }

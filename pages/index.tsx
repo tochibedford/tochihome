@@ -44,7 +44,8 @@ export default function Home() {
         <video src="./vhs.mp4" playsInline muted autoPlay loop className={styles.vhsFilter} />
         <video src="./vhsOptim.mp4" playsInline muted autoPlay loop className={styles.vhsFilter} />
         <video src="./vhsOptim2.mp4" playsInline muted autoPlay loop className={`${styles.vhsFilter} ${styles.reducedVisibility}`} />
-        <LoopingAudio audioFile='/webwave90bpm.ogg' setFreqSmoothlyRef={setFreqSmoothlyRef} />
+        {/* <LoopingAudio audioFile='https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/Yodel_Sound_Effect.mp3' setFreqSmoothlyRef={setFreqSmoothlyRef} /> */}
+        <LoopingAudio audioFile='webwave90bpm.flac' setFreqSmoothlyRef={setFreqSmoothlyRef} />
       </main>
     </>
   )
