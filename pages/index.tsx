@@ -1,28 +1,31 @@
 import Head from 'next/head'
 import styles from '@styles/Home.module.scss'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { lerp, useAnimatedT } from '../utilities'
 import LoopingAudio from '@components/loopingAudio'
 
 export default function Home() {
   const [noiseSeed, setNoiseSeed] = useState(2)
-  // const [noi, setNoiseBaseFrequency] = useState(2)
   const [audioCutoffFreq, setAudioCutoffFreq] = useState(400)
+  const setVolumeSmoothlyRef = useRef<(freq: number) => void>()
+
   const t = useAnimatedT()
   useEffect(() => {
     setNoiseSeed(lerp(40, 50, t))
   }, [t])
 
-  useEffect(() => {
-    const handleClick = () => {
-      setAudioCutoffFreq(300)
+  const handleMouseEnter = () => {
+    if (setVolumeSmoothlyRef.current) {
+      setVolumeSmoothlyRef.current(250)
     }
-    window.addEventListener('click', handleClick)
+  }
 
-    return () => {
-      window.removeEventListener('click', handleClick)
+  const handleMouseLeave = () => {
+    if (setVolumeSmoothlyRef.current) {
+      setVolumeSmoothlyRef.current(20000)
     }
-  })
+  }
+
   return (
     <>
       <Head>
@@ -32,16 +35,16 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.container}>
-        <div className={styles.noiseFilter} ></div>
+        <div className={styles.noiseFilter}></div>
         <ul className={styles.menuOptions}>
-          <li>music</li>
-          <li>experiments</li>
-          <li>résumé</li>
+          <li onMouseEnter={() => handleMouseEnter()} onMouseLeave={() => handleMouseLeave()}>music</li>
+          <li onMouseEnter={() => handleMouseEnter()} onMouseLeave={() => handleMouseLeave()}>experiments</li>
+          <li onMouseEnter={() => handleMouseEnter()} onMouseLeave={() => handleMouseLeave()}>résumé</li>
         </ul>
         <video src="./vhs.mp4" playsInline muted autoPlay loop className={styles.vhsFilter} />
         <video src="./vhsOptim.mp4" playsInline muted autoPlay loop className={styles.vhsFilter} />
         <video src="./vhsOptim2.mp4" playsInline muted autoPlay loop className={`${styles.vhsFilter} ${styles.reducedVisibility}`} />
-        <LoopingAudio audioFile='/webwave90bpm.ogg' cutoff={audioCutoffFreq} volume={0.2} />
+        <LoopingAudio audioFile='/webwave90bpm.ogg' setVolumeSmoothlyRef={setVolumeSmoothlyRef} />
       </main>
     </>
   )
