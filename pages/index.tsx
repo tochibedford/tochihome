@@ -7,7 +7,7 @@ import LoopingAudio from '@components/loopingAudio'
 export default function Home() {
   const [noiseSeed, setNoiseSeed] = useState(2)
   const [audioCutoffFreq, setAudioCutoffFreq] = useState(400)
-  const setVolumeSmoothlyRef = useRef<(freq: number) => void>()
+  const setFreqSmoothlyRef = useRef<(freq: number) => void>()
 
   const t = useAnimatedT()
   useEffect(() => {
@@ -15,14 +15,14 @@ export default function Home() {
   }, [t])
 
   const handleMouseEnter = () => {
-    if (setVolumeSmoothlyRef.current) {
-      setVolumeSmoothlyRef.current(250)
+    if (setFreqSmoothlyRef.current) {
+      setFreqSmoothlyRef.current(250)
     }
   }
 
   const handleMouseLeave = () => {
-    if (setVolumeSmoothlyRef.current) {
-      setVolumeSmoothlyRef.current(20000)
+    if (setFreqSmoothlyRef.current) {
+      setFreqSmoothlyRef.current(20000)
     }
   }
 
@@ -44,7 +44,7 @@ export default function Home() {
         <video src="./vhs.mp4" playsInline muted autoPlay loop className={styles.vhsFilter} />
         <video src="./vhsOptim.mp4" playsInline muted autoPlay loop className={styles.vhsFilter} />
         <video src="./vhsOptim2.mp4" playsInline muted autoPlay loop className={`${styles.vhsFilter} ${styles.reducedVisibility}`} />
-        <LoopingAudio audioFile='/webwave90bpm.ogg' setVolumeSmoothlyRef={setVolumeSmoothlyRef} />
+        <LoopingAudio audioFile='/webwave90bpm.ogg' setFreqSmoothlyRef={setFreqSmoothlyRef} />
       </main>
     </>
   )

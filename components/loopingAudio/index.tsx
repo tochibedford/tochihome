@@ -1,12 +1,17 @@
-import { MutableRefObject, useEffect, useState } from "react";
+import styles from './loopingAudio.module.scss'
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 
-//cutoff is a low pass fulter cutoff
-function LoopingAudio(props: { audioFile: string, setVolumeSmoothlyRef: MutableRefObject<((freq: number) => void) | undefined> }) {
+function LoopingAudio(props: { audioFile: string, setFreqSmoothlyRef: MutableRefObject<((freq: number) => void) | undefined> }) {
+    const MAX_VOLUME = 0.3
     const [audioContext, setAudioContext] = useState<AudioContext>();
     const [audioBuffer, setAudioBuffer] = useState<AudioBuffer>();
     const [sourceNode, setSourceNode] = useState<AudioBufferSourceNode>();
     const [volumeNode, setVolumeNode] = useState<GainNode>();
     const [filterNode, setFilterNode] = useState<BiquadFilterNode>();
+
+    const [isUnmuted, setIsUnmuted] = useState(false)
+
+    const containerRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         const loadAudio = async () => {
@@ -21,11 +26,12 @@ function LoopingAudio(props: { audioFile: string, setVolumeSmoothlyRef: MutableR
                 console.error(error);
             }
         };
-
         loadAudio();
+
     }, [props.audioFile]);
 
     useEffect(() => {
+        const container = containerRef.current
         const handleClick = () => {
             if (audioContext && audioBuffer) {
                 const sourceNode = audioContext.createBufferSource();
@@ -34,7 +40,7 @@ function LoopingAudio(props: { audioFile: string, setVolumeSmoothlyRef: MutableR
 
                 // Volume control
                 const volumeNode = audioContext.createGain();
-                volumeNode.gain.value = 0.5;
+                volumeNode.gain.value = MAX_VOLUME;
 
                 // Lowpass filter
                 const filterNode = audioContext.createBiquadFilter();
@@ -49,16 +55,19 @@ function LoopingAudio(props: { audioFile: string, setVolumeSmoothlyRef: MutableR
                 setSourceNode(sourceNode);
                 setVolumeNode(volumeNode);
                 setFilterNode(filterNode);
+
+                setIsUnmuted(true)
+                container?.removeEventListener('click', handleClick)
             }
         }
-        window.addEventListener('click', handleClick)
+        container?.addEventListener('click', handleClick)
 
         return () => {
-            window.removeEventListener('click', handleClick)
+            container?.removeEventListener('click', handleClick)
         }
     }, [audioContext, audioBuffer]);
 
-    useEffect(() => {
+    useEffect(() => { // handle unmounts
         return () => {
             if (sourceNode) {
                 sourceNode.stop();
@@ -73,18 +82,39 @@ function LoopingAudio(props: { audioFile: string, setVolumeSmoothlyRef: MutableR
         };
     }, [sourceNode, volumeNode, filterNode]);
 
-    props.setVolumeSmoothlyRef.current = (freq: number) => {
+    props.setFreqSmoothlyRef.current = (freq: number) => {
         // Smoothly update filter cutoff
         if (filterNode?.frequency && audioContext) {
             filterNode.frequency.setTargetAtTime(
                 freq,
                 audioContext.currentTime,
-                0.5 // Transition time in seconds
+                0.5
             );
         }
     }
 
-    return null;
+    const setVolumeSmoothly = (vol: number) => {
+        // Smoothly update volume
+        if (volumeNode?.gain && audioContext) {
+            volumeNode.gain.setTargetAtTime(
+                vol,
+                audioContext.currentTime,
+                0.3
+            );
+        }
+    }
+
+    useEffect(() => {
+        setVolumeSmoothly(isUnmuted ? MAX_VOLUME : 0)
+    }, [isUnmuted])
+
+    return (
+        <div className={[styles.container, isUnmuted ? styles.isAnimated : ""].join(" ")} ref={containerRef}>
+            <input type="checkbox" onChange={(e) => setIsUnmuted(e.currentTarget.checked)} checked={isUnmuted} />
+            <div className={styles.stroke}></div>
+            🎵
+        </div>
+    );
 }
 
 export default LoopingAudio;

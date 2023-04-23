@@ -1,0 +1,52 @@
+@keyframes dance {
+  0% {
+    transform: translateX(-2%) rotate(-7deg);
+  }
+  50% {
+    transform: translateX(0%) rotate(0deg);
+  }
+  100% {
+    transform: translateX(2%) rotate(7deg);
+  }
+}
+
+$innerPad: 0.3em;
+
+.container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  font-size: 1.5rem;
+  padding: $innerPad;
+  z-index: 1;
+  transform-origin: 50% 100%;
+  filter: saturate(0) contrast(100);
+
+  input[type="checkbox"] {
+    position: absolute;
+    inset: $innerPad;
+    opacity: 0;
+    cursor: pointer;
+
+    &:checked ~ .stroke {
+      height: 0%;
+    }
+  }
+
+  .stroke {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    width: 0.1em;
+    height: 100%;
+    background-color: black;
+    pointer-events: none;
+    transition: 0.3s;
+  }
+}
+
+.isAnimated {
+  animation: dance 0.66667s ease-in-out infinite both alternate;
+}
