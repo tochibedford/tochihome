@@ -2,7 +2,7 @@ import styles from './loopingAudio.module.scss'
 import { MutableRefObject, useEffect, useRef, useState } from "react";
 
 function LoopingAudio(props: { audioFile: string, setFreqSmoothlyRef: MutableRefObject<((freq: number) => void) | undefined> }) {
-    const MAX_VOLUME = 0.3
+    const MAX_VOLUME = 0.175
     const [audioContext, setAudioContext] = useState<AudioContext>();
     const [audioBuffer, setAudioBuffer] = useState<AudioBuffer>();
     const [sourceNode, setSourceNode] = useState<AudioBufferSourceNode>();

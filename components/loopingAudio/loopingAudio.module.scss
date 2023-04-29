@@ -14,8 +14,6 @@ $innerPad: 0.35em;
 
 .container {
   position: fixed;
-  // bottom: 0;
-  // left: 0;
   bottom: $innerPad;
   left: $innerPad;
   font-size: 1.5rem;
@@ -50,5 +48,5 @@ $innerPad: 0.35em;
 }
 
 .isAnimated {
-  animation: dance 0.66667s ease-in-out infinite both alternate;
+  animation: dance 2s ease-in-out infinite both alternate;
 }

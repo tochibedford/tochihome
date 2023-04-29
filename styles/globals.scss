@@ -25,9 +25,10 @@ a {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  mix-blend-mode: multiply;
+  mix-blend-mode: lighten;
   background: url("../assets/noise.jpg");
-  opacity: 0.75;
+  opacity: 1;
+  filter: invert(1);
   z-index: 1;
 
   @media screen and (max-width: 768px) {
@@ -57,8 +58,7 @@ a {
   &.transitionLightLeak {
     filter: none;
     mix-blend-mode: unset;
-    opacity: 0.7;
-    transition: opacity 0.9s;
+    opacity: 1;
     z-index: 3;
   }
 }
