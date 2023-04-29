@@ -9,11 +9,12 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 export default function App({ Component, pageProps }: AppProps) {
   const location = useRouter()
+
   return (
     <>
       <div className="noiseFilter"></div>
+      <Navbar />
       <AnimatePresence mode='wait' initial={false}>
-        <Navbar />
         <motion.div
           key={location.pathname}
           initial={{ opacity: 0 }}
@@ -25,10 +26,6 @@ export default function App({ Component, pageProps }: AppProps) {
             <Component {...pageProps} />
           </ErrorBoundary>
         </motion.div>
-        <Footer />
-        <video src="./vhs.mp4" playsInline muted autoPlay loop className="vhsFilter" />
-        <video src="./vhsOptim.mp4" playsInline muted autoPlay loop className="vhsFilter" />
-        <video src="./vhsOptim2.mp4" playsInline muted autoPlay loop className="vhsFilter reducedVisibility" />
         <motion.div
           key={location.pathname + "newKey"}
           initial={{ opacity: 1 }}
@@ -38,6 +35,10 @@ export default function App({ Component, pageProps }: AppProps) {
           <video src="./lightLeak.mp4" playsInline muted autoPlay loop className="vhsFilter transitionLightLeak" />
         </motion.div>
       </AnimatePresence>
+      <video src="./vhs.mp4" playsInline muted autoPlay loop className="vhsFilter" />
+      <video src="./vhsOptim.mp4" playsInline muted autoPlay loop className="vhsFilter" />
+      <video src="./vhsOptim2.mp4" playsInline muted autoPlay loop className="vhsFilter reducedVisibility" />
+      <Footer />
     </>
   )
 }

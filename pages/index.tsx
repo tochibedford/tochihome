@@ -35,7 +35,7 @@ export default function Home() {
           <li onMouseEnter={() => handleMouseEnter()} onMouseLeave={() => handleMouseLeave()}> <Link href="/experiments">experiments</Link></li>
           <li onMouseEnter={() => handleMouseEnter()} onMouseLeave={() => handleMouseLeave()}>résumé</li>
         </ul>
-        <LoopingAudio audioFile='webwave90bpm.flac' setFreqSmoothlyRef={setFreqSmoothlyRef} />
+        <LoopingAudio audioFile='webwaveNew.flac' setFreqSmoothlyRef={setFreqSmoothlyRef} />
       </main>
     </>
   )
