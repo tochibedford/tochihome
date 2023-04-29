@@ -3,16 +3,10 @@ import styles from '@styles/Home.module.scss'
 import { useEffect, useRef, useState } from 'react'
 import { lerp, useAnimatedT } from '../utilities'
 import LoopingAudio from '@components/loopingAudio'
+import Link from 'next/link'
 
 export default function Home() {
-  const [noiseSeed, setNoiseSeed] = useState(2)
-  const [audioCutoffFreq, setAudioCutoffFreq] = useState(400)
   const setFreqSmoothlyRef = useRef<(freq: number) => void>()
-
-  const t = useAnimatedT()
-  useEffect(() => {
-    setNoiseSeed(lerp(40, 50, t))
-  }, [t])
 
   const handleMouseEnter = () => {
     if (setFreqSmoothlyRef.current) {
@@ -35,16 +29,12 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.container}>
-        <div className={styles.noiseFilter}></div>
+
         <ul className={styles.menuOptions}>
           <li onMouseEnter={() => handleMouseEnter()} onMouseLeave={() => handleMouseLeave()}>music</li>
-          <li onMouseEnter={() => handleMouseEnter()} onMouseLeave={() => handleMouseLeave()}>experiments</li>
+          <li onMouseEnter={() => handleMouseEnter()} onMouseLeave={() => handleMouseLeave()}> <Link href="/experiments">experiments</Link></li>
           <li onMouseEnter={() => handleMouseEnter()} onMouseLeave={() => handleMouseLeave()}>résumé</li>
         </ul>
-        <video src="./vhs.mp4" playsInline muted autoPlay loop className={styles.vhsFilter} />
-        <video src="./vhsOptim.mp4" playsInline muted autoPlay loop className={styles.vhsFilter} />
-        <video src="./vhsOptim2.mp4" playsInline muted autoPlay loop className={`${styles.vhsFilter} ${styles.reducedVisibility}`} />
-        {/* <LoopingAudio audioFile='https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/Yodel_Sound_Effect.mp3' setFreqSmoothlyRef={setFreqSmoothlyRef} /> */}
         <LoopingAudio audioFile='webwave90bpm.flac' setFreqSmoothlyRef={setFreqSmoothlyRef} />
       </main>
     </>
