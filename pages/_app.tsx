@@ -4,12 +4,26 @@ import Navbar from '@components/navbar'
 import '@styles/globals.scss'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import LoopingAudio from '@components/loopingAudio'
 
 export default function App({ Component, pageProps }: AppProps) {
   const location = useRouter()
   const transitionVidRef = useRef<HTMLVideoElement>(null)
+  const setFreqSmoothlyRef = useRef<(freq: number) => void>()
+
+  const handleCutoff = () => {
+    if (setFreqSmoothlyRef.current) {
+      setFreqSmoothlyRef.current(250)
+    }
+  }
+
+  const handleNoCutoff = () => {
+    if (setFreqSmoothlyRef.current) {
+      setFreqSmoothlyRef.current(20000)
+    }
+  }
 
   return (
     <>
@@ -29,7 +43,7 @@ export default function App({ Component, pageProps }: AppProps) {
           }}
         >
           <ErrorBoundary fallback={<div>There was an Error Loading this page</div>}>
-            <Component {...pageProps} />
+            <Component {...pageProps} handleCutoff={handleCutoff} handleNoCutoff={handleNoCutoff} />
           </ErrorBoundary>
         </motion.div>
         <motion.div
@@ -45,6 +59,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <video src="./vhsOptim.mp4" playsInline muted autoPlay loop className="vhsFilter" />
       <video src="./vhsOptim2.mp4" playsInline muted autoPlay loop className="vhsFilter reducedVisibility" />
       <Footer />
+      <LoopingAudio audioFile='webwaveNew.flac' setFreqSmoothlyRef={setFreqSmoothlyRef} />
     </>
   )
 }

@@ -1,8 +1,8 @@
 import styles from './loopingAudio.module.scss'
 import { MutableRefObject, useEffect, useRef, useState } from "react";
 
-function LoopingAudio(props: { audioFile: string, setFreqSmoothlyRef: MutableRefObject<((freq: number) => void) | undefined> }) {
-    const MAX_VOLUME = 0.175
+function LoopingAudio(props: { children?: React.ReactNode, audioFile: string, setFreqSmoothlyRef: MutableRefObject<((freq: number) => void) | undefined> }) {
+    const MAX_VOLUME = 0.4
     const [audioContext, setAudioContext] = useState<AudioContext>();
     const [audioBuffer, setAudioBuffer] = useState<AudioBuffer>();
     const [sourceNode, setSourceNode] = useState<AudioBufferSourceNode>();
@@ -109,13 +109,27 @@ function LoopingAudio(props: { audioFile: string, setFreqSmoothlyRef: MutableRef
         setVolumeSmoothly(isUnmuted ? MAX_VOLUME : 0)
     }, [isUnmuted])
 
-    return (
-        <div className={[styles.container, isUnmuted ? styles.isAnimated : ""].join(" ")} ref={containerRef}>
-            <input type="checkbox" onChange={(e) => setIsUnmuted(e.currentTarget.checked)} checked={isUnmuted} />
-            <div className={styles.stroke}></div>
-            🎵
-        </div>
-    );
+    if (props.children) {
+        return (
+            <div className={[styles.container, isUnmuted ? styles.isAnimated : ""].join(" ")} ref={containerRef}>
+                <input type="checkbox" onChange={(e) => setIsUnmuted(e.currentTarget.checked)} checked={isUnmuted} />
+                <div className={styles.stroke}></div>
+                🎵
+            </div>
+        );
+    } else {
+        return (
+            <>
+                {props.children}
+                <div className={[styles.container, isUnmuted ? styles.isAnimated : ""].join(" ")} ref={containerRef}>
+                    <input type="checkbox" onChange={(e) => setIsUnmuted(e.currentTarget.checked)} checked={isUnmuted} />
+                    <div className={styles.stroke}></div>
+                    🎵
+                </div>
+            </>
+        );
+
+    }
 }
 
 export default LoopingAudio;

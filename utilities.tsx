@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+import moment from "moment"
 
 export function lerp(v1: number, v2: number, t: number): number {
     return (1 - t) * v1 + t * v2
@@ -32,21 +33,17 @@ export function useAnimatedT() {
 }
 
 export function useCurrentTime() {
-    const [time, setTime] = useState(new Date())
+    const [time, setTime] = useState(moment().format('hh:mm').toString().padStart(2, '0'))
 
     useEffect(() => {
         const timerId = setInterval(() => {
-            setTime(new Date())
-        }, 1000)
+            setTime(moment().format('hh:mm').toString().padStart(2, '0'))
+        }, 2000)
 
         return () => {
             clearInterval(timerId)
         }
     }, [])
 
-    const hours = time.getHours().toString().padStart(2, '0');
-    const minutes = time.getMinutes().toString().padStart(2, '0');
-    const formattedTime = hours + ':' + minutes;
-
-    return formattedTime
+    return time
 }

@@ -1,4 +1,3 @@
-import { useCallback } from 'react'
 import styles from './footer.module.scss'
 import { useCurrentTime } from '../../utilities'
 

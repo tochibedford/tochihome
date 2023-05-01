@@ -1,24 +1,8 @@
 import Head from 'next/head'
 import styles from '@styles/Home.module.scss'
-import { useEffect, useRef, useState } from 'react'
-import { lerp, useAnimatedT } from '../utilities'
-import LoopingAudio from '@components/loopingAudio'
 import Link from 'next/link'
 
-export default function Home() {
-  const setFreqSmoothlyRef = useRef<(freq: number) => void>()
-
-  const handleMouseEnter = () => {
-    if (setFreqSmoothlyRef.current) {
-      setFreqSmoothlyRef.current(250)
-    }
-  }
-
-  const handleMouseLeave = () => {
-    if (setFreqSmoothlyRef.current) {
-      setFreqSmoothlyRef.current(20000)
-    }
-  }
+export default function Home({ handleCutoff, handleNoCutoff }: { handleCutoff: () => void, handleNoCutoff: () => void }) {
 
   return (
     <>
@@ -31,11 +15,10 @@ export default function Home() {
       <main className={styles.container}>
 
         <ul className={styles.menuOptions}>
-          <li onMouseEnter={() => handleMouseEnter()} onMouseLeave={() => handleMouseLeave()}>music</li>
-          <li onMouseEnter={() => handleMouseEnter()} onMouseLeave={() => handleMouseLeave()}> <Link href="/experiments">experiments</Link></li>
-          <li onMouseEnter={() => handleMouseEnter()} onMouseLeave={() => handleMouseLeave()}>résumé</li>
+          <li onMouseEnter={() => handleCutoff()} onMouseLeave={() => handleNoCutoff()}>music</li>
+          <li onMouseEnter={() => handleCutoff()} onMouseLeave={() => handleNoCutoff()}> <Link href="/experiments">experiments</Link></li>
+          <li onMouseEnter={() => handleCutoff()} onMouseLeave={() => handleNoCutoff()}>résumé</li>
         </ul>
-        <LoopingAudio audioFile='webwaveNew.flac' setFreqSmoothlyRef={setFreqSmoothlyRef} />
       </main>
     </>
   )
