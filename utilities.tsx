@@ -33,9 +33,11 @@ export function useAnimatedT() {
 }
 
 export function useCurrentTime() {
+    const [hydrated, setHydrated] = useState(false)
     const [time, setTime] = useState(moment().utc().format('hh:mm').toString().padStart(2, '0') + " UTC")
 
     useEffect(() => {
+        setHydrated(true)
         const timerId = setInterval(() => {
             setTime(moment().local().format('hh:mm').toString().padStart(2, '0'))
         }, 1000)
@@ -45,5 +47,10 @@ export function useCurrentTime() {
         }
     }, [])
 
+    if (!hydrated) {
+        return null
+    }
+
     return time
 }
+

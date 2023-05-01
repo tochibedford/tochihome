@@ -8,16 +8,6 @@ import { useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import LoopingAudio from '@components/loopingAudio'
 
-// ignoring react minified errors
-const consoleError = console.error;
-const SUPPRESSED_WARNINGS = ['Minified React error'];
-
-console.error = function filterErrors(msg, ...args) {
-  if (!SUPPRESSED_WARNINGS.some((entry) => msg.includes(entry))) {
-    consoleError(msg, ...args);
-  }
-};
-
 export default function App({ Component, pageProps }: AppProps) {
   const location = useRouter()
   const transitionVidRef = useRef<HTMLVideoElement>(null)
