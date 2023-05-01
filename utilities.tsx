@@ -33,12 +33,12 @@ export function useAnimatedT() {
 }
 
 export function useCurrentTime() {
-    const [time, setTime] = useState(moment().format('hh:mm').toString().padStart(2, '0'))
+    const [time, setTime] = useState(moment().utc().format('hh:mm').toString().padStart(2, '0') + " UTC")
 
     useEffect(() => {
         const timerId = setInterval(() => {
-            setTime(moment().format('hh:mm').toString().padStart(2, '0'))
-        }, 2000)
+            setTime(moment().local().format('hh:mm').toString().padStart(2, '0'))
+        }, 1000)
 
         return () => {
             clearInterval(timerId)
